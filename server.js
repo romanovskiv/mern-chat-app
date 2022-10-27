@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const userRoutes = require('./routes/userRoutes');
 const User = require('./models/User');
@@ -82,6 +83,11 @@ io.on('connection', (socket) => {
       res.status(400).send();
     }
   });
+});
+
+app.use(express.static(path.resolve(__dirname, '/client/build')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
 app.get('/rooms', (req, res) => {
